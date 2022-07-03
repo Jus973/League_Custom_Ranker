@@ -145,19 +145,18 @@ async def enter_result(ctx):
 
 @bot.command()
 async def custom_ranked(ctx):
-    
-    os.environ["TESSDATA_PREFIX"] = "/tessdata"
-    pytesseract.pytesseract.tesseract_cmd = '/league_custom_ranker/tessdata'
-
-    fileName = str(ctx.author) + str(datetime.now())
-
-    for attachment in ctx.message.attachments:
-        await attachment.save(fileName + ".png")
-    
-    img = fileName + ".png"
-
-    output = pytesseract.image_to_string(Image.open(img))
-    print(output)
+  os.environ["TESSDATA_PREFIX"] = "/league_custom_ranker/tessdata"
+  pytesseract.pytesseract.tesseract_cmd = '/home/runner/Customs-Ranker/venv/bin/pytesseract.exe'
+  
+  fileName = str(ctx.author) + str(datetime.now())
+  
+  for attachment in ctx.message.attachments:
+    await attachment.save(fileName + ".png")
+  
+  img = fileName + ".png"
+  
+  output = pytesseract.image_to_string(Image.open(img))
+  print(output)
   
 
 
@@ -204,7 +203,7 @@ async def leaderboard(ctx):
         return float(e[1])
 
     for y in range(len(tempfile)):
-        tempfile[y]=str(tempfile[y]).split()
+        tempfile[y] = str(tempfile[y]).split()
     
     tempfile.sort(reverse = True, key = keys)
 
