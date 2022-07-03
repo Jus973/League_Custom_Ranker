@@ -264,6 +264,8 @@ async def messenger(ctx):
 async def on_message(msg):
   global xd
   print("in #"+str(msg.channel)+": "+str(msg.author)+": "+str(msg.content))
+  f = open("logs.txt", "a")
+  f.write("in #"+str(msg.channel)+": "+str(msg.author)+": "+str(msg.content)+"\n")
   await bot.process_commands(msg)
   if xd == False:
     return
