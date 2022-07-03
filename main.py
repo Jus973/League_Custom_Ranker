@@ -9,6 +9,7 @@ from pinger import pinger
 
 def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
 
+<<<<<<< HEAD
     ogscore = ogs
     if kdaratio == 0:
         kdaratio = 1
@@ -18,6 +19,25 @@ def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
     else:
         newscore = ogscore - (float(totalteam) / float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
     return newscore
+=======
+  ogscore = ogs
+  if kdaratio == 0:
+      kdaratio=0.0000001
+  
+  if win:
+    update=(float(totalopp) /float(totalteam)) * 7 * float(goldratio) * (kdaratio)
+    if update>200:
+      update=200
+    newscore=ogscore+update
+  else:
+    update=(float(totalteam) /float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
+    if update>200:
+       update=200
+    newscore=ogscore-update
+  if newscore<0:
+     newscore=0
+  return newscore
+>>>>>>> 3ac91602ba2ee798a51ac5e064c52647b76f7b34
 
 bot = commands.Bot(command_prefix="!")
 
@@ -135,12 +155,14 @@ async def enter_result(ctx):
         file[y] = str(file[y]).split()
     
     file.sort(reverse = True, key = keys)
+    returnStr = ""
     for y in range(len(file)):
         x = str(file[y]).split(' ')
         x[2] = x[2].split("'#")[1]
         x[2] = x[2].split("']")[0]
         x[1] = x[1].split("'")[1]
-        await ctx.channel.send(str(y + 1) + ". " + x[2] + " score: " + x[1])
+        returnStr += (str(y + 1) + ". " + x[2] + " score: " + x[1]+"\n")
+    await ctx.channel.send(returnStr)
     
 
 @bot.command()
@@ -206,13 +228,26 @@ async def leaderboard(ctx):
         tempfile[y] = str(tempfile[y]).split()
     
     tempfile.sort(reverse = True, key = keys)
-
+    returnStr = ""
     for y in range(len(tempfile)):
         x = str(tempfile[y]).split(' ')
         x[2] = x[2].split("'#")[1]
         x[2] = x[2].split("']")[0]
         x[1] = x[1].split("'")[1]
-        await ctx.channel.send(str(y + 1) + ". " + x[2] + " score: " + x[1])
+        returnStr += (str(y + 1) + ". " + x[2] + " score: " + x[1] + "\n")
+    await ctx.channel.send(returnStr)
+
+
+@bot.command()
+async def score(ctx):
+  user = ctx.message.mentions[0].id
+  with open('scores.txt','r') as f:
+        tempfile=f.readlines()
+
+        for y in range(len(tempfile)):
+            tempfile[y] = str(tempfile[y]).split()
+            if(str(tempfile[y][0]) == str(user)):
+              await ctx.channel.send(tempfile[y][1])
 
 pinger()
 token = os.environ['TOKEN']
