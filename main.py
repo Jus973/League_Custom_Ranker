@@ -130,7 +130,6 @@ async def enter_result(ctx):
         temp = ' '.join(temp)
         file[x] = temp
     
-    print(file)
 
     with open('scores.txt','w') as f:
         for x in (file):
@@ -264,6 +263,7 @@ async def messenger(ctx):
 @bot.event
 async def on_message(msg):
   global xd
+  print("in #"+str(msg.channel)+": "+str(msg.author)+": "+str(msg.content))
   await bot.process_commands(msg)
   if xd == False:
     return
