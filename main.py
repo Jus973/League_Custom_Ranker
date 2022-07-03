@@ -7,17 +7,27 @@ from PIL import Image
 import pytesseract
 from pinger import pinger
 
+xd=True
+
 def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
 
-    ogscore = ogs
-    if kdaratio == 0:
-        kdaratio = 1
-
-    if win:
-        newscore = ogscore + (float(totalopp) / float(totalteam)) * 7 * float(goldratio) * (kdaratio)
-    else:
-        newscore = ogscore - (float(totalteam) / float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
-    return newscore
+  ogscore = ogs
+  if kdaratio == 0:
+      kdaratio=0.0000001
+  
+  if win:
+    update=(float(totalopp) /float(totalteam)) * 7 * float(goldratio) * (kdaratio)
+    if update>200:
+      update=200
+    newscore=ogscore+update
+  else:
+    update=(float(totalteam) /float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
+    if update>200:
+       update=200
+    newscore=ogscore-update
+  if newscore<0:
+     newscore=0
+  return newscore
 
 bot = commands.Bot(command_prefix="!")
 
@@ -27,7 +37,6 @@ async def on_ready():
 
 @bot.command()
 async def enter_result(ctx):
-
     if (ctx.author.id != 712697061773934592 and ctx.author.id != 542870634720395275 and ctx.author.id != 341406085460131851):
         await ctx.channel.send("You dont have permission to do that!")
         return
@@ -35,6 +44,7 @@ async def enter_result(ctx):
     await ctx.channel.send("Please enter everyone on the winning team with mentions:")
 
     msg = await bot.wait_for ("message", check = lambda m: m.author == ctx.author and m.channel == ctx.channel)
+    
     winning_team = msg.mentions
     winkda = []
     winratio = []
@@ -197,7 +207,7 @@ async def hard_reset(ctx):
 async def leaderboard(ctx):
 
     with open('scores.txt','r') as f:
-        tempfile = f.readlines()
+        tempfile=f.readlines()
     
     await ctx.channel.send("Keep on climbing!!")
 
@@ -205,7 +215,7 @@ async def leaderboard(ctx):
         return float(e[1])
 
     for y in range(len(tempfile)):
-        tempfile[y] = str(tempfile[y]).split()
+        tempfile[y]=str(tempfile[y]).split()
     
     tempfile.sort(reverse = True, key = keys)
     returnStr = ""
@@ -228,6 +238,48 @@ async def score(ctx):
             tempfile[y] = str(tempfile[y]).split()
             if(str(tempfile[y][0]) == str(user)):
               await ctx.channel.send(tempfile[y][1])
+
+@bot.command()
+async def messenger(ctx):
+  global xd
+  if xd == True:
+    await ctx.channel.send("Are you sure you want to turn autoresponder off? Y/N")
+    msg = await bot.wait_for("message", check = lambda m: m.author == ctx.author and m.channel == ctx.channel)
+    
+    if str(msg.content).lower() == "y":
+      xd=False
+      return
+    else:
+      return
+  
+  if xd == False:
+    await ctx.channel.send("Are you sure you want to turn autoresponder on? Y/N")
+    msg = await bot.wait_for("message", check = lambda m: m.author == ctx.author and m.channel == ctx.channel)
+    if str(msg.content).lower() == "y":
+      xd=True
+      return
+    else:
+      return
+			
+@bot.event
+async def on_message(msg):
+  global xd
+  await bot.process_commands(msg)
+  if xd == False:
+    return
+  
+  if "oh nah" in msg.content.lower() and int(msg.author.id)==542870634720395275:
+    await msg.channel.send(":skull:")
+  if msg.content=="L" and int(msg.author.id)!=542870634720395275:
+    await msg.channel.send("bozo")
+  if msg.content.lower()=="ashley":
+    await msg.channel.send("SHUT THE FUCK UP")
+  if "kys" in msg.content.lower() or "kms" in msg.content.lower():
+    await msg.channel.send("chill out bro it's not worth it")
+  if "help me" in msg.content.lower():
+    await msg.channel.send("Call 911 or text your loved ones or it's wraps")
+  
+
 
 pinger()
 token = os.environ['TOKEN']
