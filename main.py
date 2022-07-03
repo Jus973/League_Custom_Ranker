@@ -9,7 +9,6 @@ from pinger import pinger
 
 def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
 
-<<<<<<< HEAD
     ogscore = ogs
     if kdaratio == 0:
         kdaratio = 1
@@ -19,25 +18,6 @@ def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
     else:
         newscore = ogscore - (float(totalteam) / float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
     return newscore
-=======
-  ogscore = ogs
-  if kdaratio == 0:
-      kdaratio=0.0000001
-  
-  if win:
-    update=(float(totalopp) /float(totalteam)) * 7 * float(goldratio) * (kdaratio)
-    if update>200:
-      update=200
-    newscore=ogscore+update
-  else:
-    update=(float(totalteam) /float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
-    if update>200:
-       update=200
-    newscore=ogscore-update
-  if newscore<0:
-     newscore=0
-  return newscore
->>>>>>> 3ac91602ba2ee798a51ac5e064c52647b76f7b34
 
 bot = commands.Bot(command_prefix="!")
 
