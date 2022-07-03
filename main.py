@@ -17,7 +17,7 @@ def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
         newscore = ogscore + (float(totalopp) / float(totalteam)) * 7 * float(goldratio) * (kdaratio)
     else:
         newscore = ogscore - (float(totalteam) / float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
-        return newscore
+    return newscore
 
 bot = commands.Bot(command_prefix="!")
 
@@ -146,7 +146,7 @@ async def enter_result(ctx):
 async def custom_ranked(ctx):
   os.environ["TESSDATA_PREFIX"] = "/league_custom_ranker/tessdata"
   pytesseract.pytesseract.tesseract_cmd = '/home/runner/Customs-Ranker/venv/bin/pytesseract.exe'
-    
+  
   fileName = str(ctx.author) + str(datetime.now())
   
   for attachment in ctx.message.attachments:
