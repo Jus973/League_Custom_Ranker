@@ -11,13 +11,13 @@ def elo_function(totalopp, totalteam, goldratio, kdaratio, win, ogs):
 
     ogscore = ogs
     if kdaratio == 0:
-        kdaratio=1
+        kdaratio = 1
 
     if win:
         newscore = ogscore + (float(totalopp) / float(totalteam)) * 7 * float(goldratio) * (kdaratio)
     else:
         newscore = ogscore - (float(totalteam) / float(totalopp)) * 30 / float(goldratio) / float(kdaratio)
-        return newscore
+    return newscore
 
 bot = commands.Bot(command_prefix="!")
 
@@ -27,6 +27,7 @@ async def on_ready():
 
 @bot.command()
 async def enter_result(ctx):
+
     if (ctx.author.id != 712697061773934592 and ctx.author.id != 542870634720395275 and ctx.author.id != 341406085460131851):
         await ctx.channel.send("You dont have permission to do that!")
         return
@@ -144,18 +145,19 @@ async def enter_result(ctx):
 
 @bot.command()
 async def custom_ranked(ctx):
-  os.environ["TESSDATA_PREFIX"] = "/league_custom_ranker/tessdata"
-  pytesseract.pytesseract.tesseract_cmd = '/home/runner/Customs-Ranker/venv/bin/pytesseract.exe'
     
-  fileName = str(ctx.author) + str(datetime.now())
-  
-  for attachment in ctx.message.attachments:
-    await attachment.save(fileName + ".png")
-  
-  img = fileName + ".png"
-  
-  output = pytesseract.image_to_string(Image.open(img))
-  print(output)
+    os.environ["TESSDATA_PREFIX"] = "/tessdata"
+    pytesseract.pytesseract.tesseract_cmd = '/league_custom_ranker/tessdata'
+
+    fileName = str(ctx.author) + str(datetime.now())
+
+    for attachment in ctx.message.attachments:
+        await attachment.save(fileName + ".png")
+    
+    img = fileName + ".png"
+
+    output = pytesseract.image_to_string(Image.open(img))
+    print(output)
   
 
 
@@ -194,7 +196,7 @@ async def hard_reset(ctx):
 async def leaderboard(ctx):
 
     with open('scores.txt','r') as f:
-        tempfile=f.readlines()
+        tempfile = f.readlines()
     
     await ctx.channel.send("Keep on climbing!!")
 
