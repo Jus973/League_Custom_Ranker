@@ -269,7 +269,8 @@ async def on_message(msg):
   await bot.process_commands(msg)
   if xd == False:
     return
-  
+  if int(msg.author.id)==991939871948144720:
+	  return
   if "oh nah" in msg.content.lower() and int(msg.author.id)==542870634720395275:
     await msg.channel.send(":skull:")
   if msg.content=="L" and int(msg.author.id)!=542870634720395275:
@@ -280,8 +281,17 @@ async def on_message(msg):
     await msg.channel.send("chill out bro it's not worth it")
   if "help me" in msg.content.lower():
     await msg.channel.send("Call 911 or text your loved ones or it's wraps")
-  
-
+  if "love" in msg.content.lower() or "so g" in msg.content.lower():
+	  await msg.channel.send("stop dickriding bruh")
+  if "cope" in msg.content.lower():
+	  await msg.channel.send("copium")
+  if "copium" in msg.content.lower():
+	  await msg.channel.send("COPE BITCH")
+  if "polo" in msg.content.lower():
+	  await msg.channel.send("Caught him lackin in his whip, they still tryna find his face in there")
+  if "pop out" in msg.content.lower():
+	  await msg.channel.send("we pop out at your party, Im with the gang")
+	
 
 pinger()
 token = os.environ['TOKEN']
